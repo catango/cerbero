@@ -1,0 +1,18 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+
+class Recipe(recipe.Recipe):
+    name = 'pulseaudio'
+    version = 'master'
+    remotes = {'origin': 'https://gitlab.freedesktop.org/pulseaudio/pulseaudio.git'}
+#    remotes = {'origin': 'https://10.10.10.150/git/pulseaudio.git'}
+    commit = '200618b32f0964a479d69c9b6e5073e6931c370a'
+    stype = SourceType.GIT
+    licenses = [License.GPLv2Plus]
+    patches = [name + '/0001-windows-fixes-arpa.patch',
+               name + '/0002-windows-fixes-pt2.patch'
+              ]
+    deps = ['libtool', 'libsndfile']
+
+    autoreconf = True
+    autoreconf_sh = 'NOCONFIGURE=1 ./bootstrap.sh'
+    configure_options = '--disable-tests --disable-gconf --disable-gsettings --disable-gtk3 --disable-bluez5 --disable-esound --disable-alsa --disable-avahi --disable-openssl --disable-udev --disable-default-build-tests --disable-jack --disable-x11 --disable-manpages'

@@ -13,6 +13,7 @@ class Recipe(custom.GStreamer):
                      'lame': 'enabled', 
                      'mpg123': 'enabled',
                      'png': 'enabled',
+                     'pulse': 'enabled',
                      'soup': 'enabled',
                      'speex': 'enabled',
                      'taglib': 'enabled',
@@ -33,7 +34,7 @@ class Recipe(custom.GStreamer):
     deps = ['gstreamer-1.0', 'gst-plugins-base-1.0', 'libjpeg-turbo', 'libpng',
             'speex', 'gdk-pixbuf', 'libsoup', 'mpg123', 'lame',
             'orc', 'wavpack', 'flac', 'taglib', 'bzip2', 'zlib',
-            'libvpx', 'libdv', 'cairo']
+            'libvpx', 'libdv', 'cairo', 'pulseaudio']
     use_system_libs = True
 
 
@@ -234,7 +235,7 @@ class Recipe(custom.GStreamer):
 
         self.enable_plugin('video4linux2', 'capture', 'v4l2', option='v4l2')
         self.enable_plugin('ximagesrc', 'capture', 'x11')
-        self.enable_plugin('pulseaudio', 'sys', 'pulse', option='pulse')
+#        self.enable_plugin('pulseaudio', 'sys', 'pulse', option='pulse')
 
         # Enable qt5 plugin if possible and selected
         can_enable_qt5 = True

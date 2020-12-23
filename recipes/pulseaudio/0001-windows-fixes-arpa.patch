@@ -1,0 +1,46 @@
+From a216a4b7f7c555d7e730f015e84eacb045751ac2 Mon Sep 17 00:00:00 2001
+From: chpr <carthango@gmx.net>
+Date: Tue, 22 Dec 2020 15:12:36 +0100
+Subject: [PATCH 1/2] windows fixes arpa
+
+---
+ src/pulsecore/arpa-inet.c | 2 ++
+ src/pulsecore/arpa-inet.h | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/pulsecore/arpa-inet.c b/src/pulsecore/arpa-inet.c
+index afea3971a..24dd44b50 100644
+--- a/src/pulsecore/arpa-inet.c
++++ b/src/pulsecore/arpa-inet.c
+@@ -31,6 +31,7 @@
+ 
+ #include "arpa-inet.h"
+ 
++/*
+ const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt) {
+     struct in_addr *in = (struct in_addr*)src;
+ #ifdef HAVE_IPV6
+@@ -75,6 +76,7 @@ const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt) {
+ 
+     return dst;
+ }
++*/
+ 
+ int inet_pton(int af, const char *src, void *dst) {
+     struct in_addr *in = (struct in_addr*)dst;
+diff --git a/src/pulsecore/arpa-inet.h b/src/pulsecore/arpa-inet.h
+index d940f704f..5fe22ee47 100644
+--- a/src/pulsecore/arpa-inet.h
++++ b/src/pulsecore/arpa-inet.h
+@@ -12,7 +12,7 @@
+ 
+ #include <pulsecore/socket.h>
+ 
+-const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt);
++//const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt);
+ 
+ int inet_pton(int af, const char *src, void *dst);
+ 
+-- 
+2.29.2.windows.2
+
