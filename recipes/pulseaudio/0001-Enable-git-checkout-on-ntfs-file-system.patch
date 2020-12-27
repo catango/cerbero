@@ -1,0 +1,24 @@
+From 24f51df2bcfe11b40fa014a31fae68bc57caf349 Mon Sep 17 00:00:00 2001
+From: chpr <carthango@gmx.net>
+Date: Sun, 10 Jan 2021 19:21:52 +0100
+Subject: [PATCH 1/5] Enable git checkout on ntfs file system
+
+git for Windows has a nasty bug that prevents checkout of files with
+ntfs non-conformat filenames. Additional git configuration overrides
+this feature
+---
+ .gitconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 .gitconfig
+
+diff --git a/.gitconfig b/.gitconfig
+new file mode 100644
+index 000000000..a2ce70a70
+--- /dev/null
++++ b/.gitconfig
+@@ -0,0 +1,2 @@
++[core]
++	protectNTFS = false
+-- 
+2.29.2.windows.2
+

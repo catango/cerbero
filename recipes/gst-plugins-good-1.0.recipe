@@ -18,6 +18,7 @@ class Recipe(custom.GStreamer):
                      'taglib': 'enabled',
                      'vpx': 'enabled',
                      'wavpack': 'enabled',
+                     # 'pulse': 'enabled',
                      # disabled plugins
                      'aalib': 'disabled',
                      'dv1394': 'disabled',
@@ -33,7 +34,7 @@ class Recipe(custom.GStreamer):
     deps = ['gstreamer-1.0', 'gst-plugins-base-1.0', 'libjpeg-turbo', 'libpng',
             'speex', 'gdk-pixbuf', 'libsoup', 'mpg123', 'lame',
             'orc', 'wavpack', 'flac', 'taglib', 'bzip2', 'zlib',
-            'libvpx', 'libdv', 'cairo']
+            'libvpx', 'libdv', 'cairo', 'pulseaudio']
     use_system_libs = True
 
 

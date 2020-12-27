@@ -1,0 +1,107 @@
+From 4a0cbeb3d4fb6b69a372c904ec71fcb25662fc2f Mon Sep 17 00:00:00 2001
+From: chpr <carthango@gmx.net>
+Date: Sun, 10 Jan 2021 22:44:07 +0100
+Subject: [PATCH 3/5] Fix includes for mingw32
+
+Recent mingw headers include additional includes for functions and
+data structures. Additional defines added to exclude duplicates
+---
+ src/pulsecore/arpa-inet.c | 3 +++
+ src/pulsecore/arpa-inet.h | 4 ++++
+ src/pulsecore/macro.h     | 5 +++++
+ src/pulsecore/poll.h      | 6 ++++--
+ 4 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/src/pulsecore/arpa-inet.c b/src/pulsecore/arpa-inet.c
+index afea3971a..9eb7ab93c 100644
+--- a/src/pulsecore/arpa-inet.c
++++ b/src/pulsecore/arpa-inet.c
+@@ -31,6 +31,8 @@
+ 
+ #include "arpa-inet.h"
+ 
++#if !defined HAVE_WS2TCPIP_H
++
+ const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt) {
+     struct in_addr *in = (struct in_addr*)src;
+ #ifdef HAVE_IPV6
+@@ -104,3 +106,4 @@ int inet_pton(int af, const char *src, void *dst) {
+ }
+ 
+ #endif
++#endif
+diff --git a/src/pulsecore/arpa-inet.h b/src/pulsecore/arpa-inet.h
+index d940f704f..15446bc91 100644
+--- a/src/pulsecore/arpa-inet.h
++++ b/src/pulsecore/arpa-inet.h
+@@ -12,6 +12,9 @@
+ 
+ #include <pulsecore/socket.h>
+ 
++#if !defined HAVE_WS2TCPIP_H
++/* This function is defined in recent mingw32 in file ws2tcpip.h*/
++
+ const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt);
+ 
+ int inet_pton(int af, const char *src, void *dst);
+@@ -19,3 +22,4 @@ int inet_pton(int af, const char *src, void *dst);
+ #endif
+ 
+ #endif
++#endif
+diff --git a/src/pulsecore/macro.h b/src/pulsecore/macro.h
+index bb15b7f01..f72fc3796 100644
+--- a/src/pulsecore/macro.h
++++ b/src/pulsecore/macro.h
+@@ -233,6 +233,10 @@ static inline size_t PA_ALIGN(size_t l) {
+ #endif
+ 
+ /* A compile time assertion */
++/* This macro breaks builds on windows - we make remove it therefor */
++#if defined (OS_IS_WIN32)
++#define pa_assert_cc(expr)
++#else
+ #define pa_assert_cc(expr)                         \
+     do {                                           \
+         switch (0) {                               \
+@@ -241,6 +245,7 @@ static inline size_t PA_ALIGN(size_t l) {
+                 ;                                  \
+         }                                          \
+     } while (false)
++#endif
+ 
+ #define PA_PTR_TO_UINT(p) ((unsigned int) ((uintptr_t) (p)))
+ #define PA_UINT_TO_PTR(u) ((void*) ((uintptr_t) (u)))
+diff --git a/src/pulsecore/poll.h b/src/pulsecore/poll.h
+index 4af1b9946..781576623 100644
+--- a/src/pulsecore/poll.h
++++ b/src/pulsecore/poll.h
+@@ -24,7 +24,8 @@
+ 
+ #if defined(HAVE_POLL_H)
+ #include <poll.h>
+-#else
++#elsif !defined HAVE_WINSOCK2_H
++/* This struct is defined in recent mingw32 in winsock2.h*/
+ 
+ /* Event types that can be polled for.  These bits may be set in `events'
+    to indicate the interesting event types; they will appear in `revents'
+@@ -41,6 +42,7 @@
+ #define POLLNVAL        0x020           /* Invalid polling request.  */
+ 
+ /* Data structure describing a polling request.  */
++
+ struct pollfd {
+     int fd;                     /* File descriptor to poll.  */
+     short int events;           /* Types of events poller cares about.  */
+@@ -57,6 +59,6 @@ struct pollfd {
+ 
+ #if defined(HAVE_POLL_H) && !defined(OS_IS_DARWIN)
+ #define pa_poll(fds,nfds,timeout) poll((fds),(nfds),(timeout))
+-#else
++#elsif !defined HAVE_WINSOCK2_H
+ int pa_poll(struct pollfd *fds, unsigned long nfds, int timeout);
+ #endif
+-- 
+2.29.2.windows.2
+

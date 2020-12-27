@@ -1,0 +1,68 @@
+From 56a13ae55ccc5cb7472cb51b4db87f3c3706a0a8 Mon Sep 17 00:00:00 2001
+From: chpr <carthango@gmx.net>
+Date: Sun, 10 Jan 2021 19:24:18 +0100
+Subject: [PATCH 2/5] Fix includes to enable msvc build
+
+Change includes to enable windows headers on msvc build
+---
+ src/pulse/def.h          | 8 +++++++-
+ src/pulse/mainloop-api.h | 7 ++++++-
+ src/pulse/sample.h       | 5 ++++-
+ 3 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/src/pulse/def.h b/src/pulse/def.h
+index 100df5b5d..d1ffd1dda 100644
+--- a/src/pulse/def.h
++++ b/src/pulse/def.h
+@@ -22,7 +22,13 @@
+ ***/
+ 
+ #include <inttypes.h>
+-#include <sys/time.h>
++
++#ifndef _MSC_VER
++ #include <sys/time.h>
++#else
++ #include <time.h>
++ #include <winsock.h>
++#endif
+ 
+ #include <pulse/cdecl.h>
+ #include <pulse/sample.h>
+diff --git a/src/pulse/mainloop-api.h b/src/pulse/mainloop-api.h
+index f04ba2099..536b7c0b1 100644
+--- a/src/pulse/mainloop-api.h
++++ b/src/pulse/mainloop-api.h
+@@ -21,7 +21,12 @@
+   License along with PulseAudio; if not, see <http://www.gnu.org/licenses/>.
+ ***/
+ 
+-#include <sys/time.h>
++#ifndef _MSC_VER
++ #include <sys/time.h>
++#else
++ #include <time.h>
++ #include <winsock.h>
++#endif
+ 
+ #include <pulse/cdecl.h>
+ #include <pulse/version.h>
+diff --git a/src/pulse/sample.h b/src/pulse/sample.h
+index b368fdace..7e1f0ad75 100644
+--- a/src/pulse/sample.h
++++ b/src/pulse/sample.h
+@@ -23,7 +23,10 @@
+ 
+ #include <inttypes.h>
+ #include <sys/types.h>
+-#include <sys/param.h>
++
++#if HAVE_SYS_PARAM_H
++ #include <sys/param.h>
++#endif
+ 
+ #include <pulse/gccmacro.h>
+ #include <pulse/cdecl.h>
+-- 
+2.29.2.windows.2
+

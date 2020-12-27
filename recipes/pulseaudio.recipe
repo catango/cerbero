@@ -1,0 +1,27 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+
+class Recipe(recipe.Recipe):
+    name = 'pulseaudio'
+    version = '13.0'
+    remotes = {'origin': 'https://gitlab.freedesktop.org/pulseaudio/pulseaudio.git'}
+    commit = '200618b32f0964a479d69c9b6e5073e6931c370a'
+    stype = SourceType.GIT
+    licenses = [License.GPLv2Plus]
+    patches = [name + '/0001-Enable-git-checkout-on-ntfs-file-system.patch',
+               name + '/0002-Fix-includes-to-enable-msvc-build.patch',
+               name + '/0003-Fix-includes-for-mingw32.patch',
+               name + '/0004-Check-for-sys-param-on-configure.patch',
+               name + '/0005-Configure-check-for-putenv.patch'
+              ]
+    deps = ['libtool', 'libsndfile', 'pcre']
+    autoreconf = True
+    autoreconf_sh = 'NOCONFIGURE=1 ./bootstrap.sh'
+    configure_options = '--disable-tests --disable-gconf --disable-gsettings --disable-gtk3 --disable-bluez5 --disable-esound --disable-alsa --disable-avahi --disable-openssl --disable-udev --disable-default-build-tests --disable-jack --disable-x11 --disable-manpages'
+
+    files_libs = ['libpulse-mainloop-glib', 'libpulse-simple', 'libpulse', ]
+#    files_misc = ['lib/bin/libpulsecommon-13.0', 'lib/bin/libpulsecore-13.0', 'lib/pulse-13.0/bin/libcli', 'lib/pulse-13.0/bin/libprotocol-cli', 'lib/pulse-13.0/bin/libprotocol-http', 'lib/pulse-13.0/bin/libprotocol-native%(mext)s', 'lib/pulse-13.0/bin/libprotocol-simple%(mext)s', 'lib/pulse-13.0/modules/module-http-protocol-tcp%(mext)s']
+    files_bins = ['pacat', 'pactl', 'pamon', 'paplay', 'parec', 'parecord', 'pulseaudio']
+
+    def prepare(self):
+        if self.config.target_platform == Platform.WINDOWS:
+            self.append_env('CFLAGS', '-std=c99')
