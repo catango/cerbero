@@ -18,7 +18,6 @@ class Recipe(custom.GStreamer):
                      'taglib': 'enabled',
                      'vpx': 'enabled',
                      'wavpack': 'enabled',
-                     # 'pulse': 'enabled',
                      # disabled plugins
                      'aalib': 'disabled',
                      'dv1394': 'disabled',
