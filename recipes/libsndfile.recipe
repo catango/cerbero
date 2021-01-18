@@ -1,0 +1,18 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+
+class Recipe(recipe.Recipe):
+    name = 'libsndfile'
+    version = '1.0.28'
+    #stype = SourceType.TARBALL
+    #url = 'https://github.com/%(name)s/%(name)s/archive/%(version)s.tar.gz'
+    #tarball_checksum = '89abe87316bc9afac9e5b34b137a399286cbcd6affad409b110596e3b749c897'
+    remotes = {'origin': 'https://github.com/libsndfile/libsndfile.git'}
+    commit = '1d928bffdb65e827c3e7d17ece0e123b4a70ec6c'
+    stype = SourceType.GIT
+    licenses = [License.GPLv2Plus]
+    patches = [name + '/0001-aclocal-fix-in-autogen.patch',
+              ]
+
+    autoreconf = True
+    configure_options = '--disable-external-libs --disable-full-suite --enable-static'
+    files_libs = ['libsndfile']

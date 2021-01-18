@@ -1,0 +1,16 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+
+class Recipe(recipe.Recipe):
+    name = 'pcre'
+    version = '8.44'
+    stype = SourceType.TARBALL
+    url = 'https://downloads.sourceforge.net/project/pcre/pcre/8.44/pcre-8.44.zip'
+    tarball_checksum = '3464cc5effda458e1c80882e53fc710195bf0d6d923c0866cafea43c7f321d25'
+    licenses = [License.GPLv2Plus]
+#    patches = [name + '/0001-aclocal-fix-in-autogen.patch',
+#              ]
+
+    autoreconf = True
+    autoreconf_sh = 'autoreconf -if'
+#    configure_options = '--disable-external-libs --disable-full-suite --enable-static'
+#    files_libs = ['libsndfile']

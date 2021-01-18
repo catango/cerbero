@@ -1,0 +1,25 @@
+From 01a5f5fe5c60dd336a362328a6c99deddb99cf96 Mon Sep 17 00:00:00 2001
+From: chpr <chpr@chpr>
+Date: Thu, 24 Dec 2020 12:30:33 +0100
+Subject: [PATCH] aclocal fix in autogen
+
+---
+ autogen.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/autogen.sh b/autogen.sh
+index 4f98f961..bee50e8e 100755
+--- a/autogen.sh
++++ b/autogen.sh
+@@ -4,7 +4,7 @@
+ 
+ package="libsndfile"
+ 
+-ACLOCAL_FLAGS="-I M4"
++ACLOCAL_FLAGS="-I M4 $ACLOCAL_FLAGS"
+ 
+ olddir=`pwd`
+ srcdir=`dirname $0`
+-- 
+2.29.2.windows.2
+
